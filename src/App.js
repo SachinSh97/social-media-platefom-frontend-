@@ -7,6 +7,13 @@ import Signup from "./pages/signup";
 import Navbar from "./components/Navbar";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import AuthRoute from "./util/AuthRoute";
+import jwtDecode from "jwt-decode";
+import { Provider } from "react-redux";
+import store from "./redux/store";
+import { SET_AUTHENTICATED } from "./redux/types";
+import { logoutUser, getUserData } from "./redux/actions/userAction";
+import Axios from "axios";
 
 const theme = createMuiTheme({
   palette: {
@@ -27,21 +34,39 @@ const theme = createMuiTheme({
     useNextVariants: true,
   },
 });
+
+const token = localStorage.FBIdToken;
+if (token) {
+  debugger;
+  const decodedToken = jwtDecode(token);
+  console.log(decodedToken);
+  if (decodedToken.exp * 1000 < Date.now()) {
+    store.dispatch(logoutUser());
+    window.location.href = "/login";
+  } else {
+    store.dispatch({ type: SET_AUTHENTICATED });
+    Axios.defaults.headers.common["Authorization"] = token;
+    store.dispatch(getUserData());
+  }
+}
+
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
-      <div className="App">
-        <Router>
-          <Navbar />
-          <div className="container">
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/signup" component={Signup} />
-            </Switch>
-          </div>
-        </Router>
-      </div>
+      <Provider store={store}>
+        <div className="App">
+          <Router>
+            <Navbar />
+            <div className="container">
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <AuthRoute exact path="/login" component={Login} />
+                <AuthRoute exact path="/signup" component={Signup} />
+              </Switch>
+            </div>
+          </Router>
+        </div>
+      </Provider>
     </MuiThemeProvider>
   );
 }

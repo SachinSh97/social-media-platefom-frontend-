@@ -4,6 +4,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import Link from "react-router-dom/Link";
 
+import { connect } from "react-redux";
 class Navbar extends Component {
   render() {
     return (
@@ -23,5 +24,7 @@ class Navbar extends Component {
     );
   }
 }
-
-export default Navbar;
+const mapStateTorops = (state) => ({
+  authenticated: state.user.authenticated,
+});
+export default connect(mapStateTorops)(Navbar);
