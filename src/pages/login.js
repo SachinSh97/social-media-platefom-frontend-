@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
-
+import AppIcon from "../images/icon.png";
 import { Link } from "react-router-dom";
 
 // MUI Stuff
@@ -13,7 +13,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import theme from "../util/theme";
 // Redux stuff
 import { connect } from "react-redux";
-import { loginUser } from "../redux/actions/userAction";
+import { loginUser } from "../redux/actions/userActions";
 
 const styles = {
   ...theme,
@@ -52,11 +52,12 @@ class login extends Component {
       UI: { loading },
     } = this.props;
     const { errors } = this.state;
-    debugger;
+
     return (
       <Grid container className={classes.form}>
         <Grid item sm />
         <Grid item sm>
+          <img src={AppIcon} alt="monkey" className={classes.image} />
           <Typography variant="h2" className={classes.pageTitle}>
             Login
           </Typography>
