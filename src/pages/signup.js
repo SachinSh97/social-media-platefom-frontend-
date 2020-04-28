@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
-import AppIcon from "../images/icon.png";
 import { Link } from "react-router-dom";
 
 // MUI Stuff
@@ -10,10 +9,11 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import axios from "axios";
 import theme from "../util/theme";
 // Redux stuff
 import { connect } from "react-redux";
-import { signupUser } from "../redux/actions/userActions";
+import { signupUser } from "../redux/actions/userAction";
 
 const styles = {
   ...theme,
@@ -27,6 +27,7 @@ class signup extends Component {
       password: "",
       confirmPassword: "",
       handle: "",
+
       errors: {},
     };
   }
@@ -37,9 +38,7 @@ class signup extends Component {
   }
   handleSubmit = (event) => {
     event.preventDefault();
-    this.setState({
-      loading: true,
-    });
+
     const newUserData = {
       email: this.state.email,
       password: this.state.password,
@@ -64,11 +63,22 @@ class signup extends Component {
       <Grid container className={classes.form}>
         <Grid item sm />
         <Grid item sm>
-          <img src={AppIcon} alt="monkey" className={classes.image} />
           <Typography variant="h2" className={classes.pageTitle}>
-            SignUp
+            Sign up
           </Typography>
           <form noValidate onSubmit={this.handleSubmit}>
+            <TextField
+              id="handle"
+              name="handle"
+              type="text"
+              label="Username"
+              className={classes.textField}
+              helperText={errors.handle}
+              error={errors.handle ? true : false}
+              value={this.state.handle}
+              onChange={this.handleChange}
+              fullWidth
+            />
             <TextField
               id="email"
               name="email"
@@ -105,18 +115,6 @@ class signup extends Component {
               onChange={this.handleChange}
               fullWidth
             />
-            <TextField
-              id="handle"
-              name="handle"
-              type="text"
-              label="Handle"
-              className={classes.textField}
-              helperText={errors.handle}
-              error={errors.handle ? true : false}
-              value={this.state.handle}
-              onChange={this.handleChange}
-              fullWidth
-            />
             {errors.general && (
               <Typography variant="body2" className={classes.customError}>
                 {errors.general}
@@ -129,14 +127,14 @@ class signup extends Component {
               className={classes.button}
               disabled={loading}
             >
-              SignUp
+              Signup
               {loading && (
                 <CircularProgress size={30} className={classes.progress} />
               )}
             </Button>
             <br />
             <small>
-              Already have an account ? Login <Link to="/login">here</Link>
+              Already have an account ? login <Link to="/login">here</Link>
             </small>
           </form>
         </Grid>
@@ -148,16 +146,18 @@ class signup extends Component {
 
 signup.propTypes = {
   classes: PropTypes.object.isRequired,
+  signupUser: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   UI: PropTypes.object.isRequired,
-  signupUser: PropTypes.func.isRequired,
 };
-
 const mapStateToProps = (state) => ({
   user: state.user,
   UI: state.UI,
 });
-
-export default connect(mapStateToProps, { signupUser })(
-  withStyles(styles)(signup)
-);
+const mapActionsToProps = {
+  signupUser,
+};
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(withStyles(styles)(signup));

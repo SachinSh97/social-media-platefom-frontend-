@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import MyButton from '../../util/MyButton';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-// Icons
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
-// REdux
-import { connect } from 'react-redux';
-import { likeScream, unlikeScream } from '../../redux/actions/dataActions';
+import React, { Component } from "react";
+import MyButton from "../util/MyButton";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+//Icons
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
+//redux
+import { connect } from "react-redux";
+import { likeScream, unlikeScream } from "../redux/actions/dataAction";
 
-export class LikeButton extends Component {
+class LikeButton extends Component {
   likedScream = () => {
     if (
       this.props.user.likes &&
@@ -27,6 +27,7 @@ export class LikeButton extends Component {
     this.props.unlikeScream(this.props.screamId);
   };
   render() {
+    debugger;
     const { authenticated } = this.props.user;
     const likeButton = !authenticated ? (
       <Link to="/login">
@@ -35,35 +36,29 @@ export class LikeButton extends Component {
         </MyButton>
       </Link>
     ) : this.likedScream() ? (
-      <MyButton tip="Undo like" onClick={this.unlikeScream}>
+      <MyButton tip="Undolike" onClick={this.unlikeScream}>
         <FavoriteIcon color="primary" />
       </MyButton>
     ) : (
-      <MyButton tip="Like" onClick={this.likeScream}>
+      <MyButton tip="like" onClick={this.likeScream}>
         <FavoriteBorder color="primary" />
       </MyButton>
     );
     return likeButton;
   }
 }
-
 LikeButton.propTypes = {
   user: PropTypes.object.isRequired,
-  screamId: PropTypes.string.isRequired,
+  screamId: PropTypes.object.isRequired,
   likeScream: PropTypes.func.isRequired,
-  unlikeScream: PropTypes.func.isRequired
+  unlikeScream: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  user: state.user
+  user: state.user,
 });
-
 const mapActionsToProps = {
   likeScream,
-  unlikeScream
+  unlikeScream,
 };
-
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(LikeButton);
+export default connect(mapStateToProps, mapActionsToProps)(LikeButton);

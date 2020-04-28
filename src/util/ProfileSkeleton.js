@@ -9,6 +9,7 @@ import LocationOn from "@material-ui/icons/LocationOn";
 import LinkIcon from "@material-ui/icons/Link";
 import CalendarToday from "@material-ui/icons/CalendarToday";
 import theme from "./theme";
+
 const styles = {
   ...theme,
   handle: {

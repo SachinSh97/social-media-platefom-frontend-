@@ -1,12 +1,13 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
-import MyButton from "../../util/MyButton";
+import MyButton from "../util/MyButton";
 import LikeButton from "./LikeButton";
 import Comments from "./Comments";
 import CommentForm from "./CommentForm";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
+import theme from "../util/theme";
 // MUI Stuff
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -17,10 +18,9 @@ import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import UnfoldMore from "@material-ui/icons/UnfoldMore";
 import ChatIcon from "@material-ui/icons/Chat";
-import theme from "../../util/theme";
 // Redux stuff
 import { connect } from "react-redux";
-import { getScream, clearErrors } from "../../redux/actions/dataActions";
+import { getScream, clearErrors } from "../redux/actions/dataAction";
 
 const styles = {
   ...theme,
@@ -96,7 +96,7 @@ class ScreamDialog extends Component {
 
     const dialogMarkup = loading ? (
       <div className={classes.spinnerDiv}>
-        <CircularProgress size={200} thickness={2} />
+        <CircularProgress size={100} thickness={2} />
       </div>
     ) : (
       <Grid container spacing={16}>
